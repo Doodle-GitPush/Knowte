@@ -57,10 +57,10 @@ public class SlashCommandEngineTests
     }
 
     [Test]
-    public void GetEnterContinuation_ListMode_FreeLine_ReturnsPlain()
+    public void GetEnterContinuation_ListMode_FreeLine_ReturnsContinuation()
     {
         var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.List, "just a note");
-        Assert.That(result, Is.EqualTo("\n"));
+        Assert.That(result, Is.EqualTo("\n- "));
     }
 
     // Checklist mode continuation
@@ -86,10 +86,10 @@ public class SlashCommandEngineTests
     }
 
     [Test]
-    public void GetEnterContinuation_ChecklistMode_FreeLine_ReturnsPlain()
+    public void GetEnterContinuation_ChecklistMode_FreeLine_ReturnsContinuation()
     {
         var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.Checklist, "just a note");
-        Assert.That(result, Is.EqualTo("\n"));
+        Assert.That(result, Is.EqualTo("\n- [ ] "));
     }
 
     [Test]

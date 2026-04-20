@@ -62,10 +62,10 @@ public class SlashCommandEngine
     {
         return mode switch
         {
-            DocumentMode.List when lineText == "- "    => null,
-            DocumentMode.List when lineText.StartsWith("- ") => "\n- ",
+            DocumentMode.List when lineText == "- " => null,
+            DocumentMode.List => "\n- ",
             DocumentMode.Checklist when lineText == "- [ ] " => null,
-            DocumentMode.Checklist when lineText.StartsWith("- [ ] ") || lineText.StartsWith("- [x] ") => "\n- [ ] ",
+            DocumentMode.Checklist => "\n- [ ] ",
             _ => "\n"
         };
     }

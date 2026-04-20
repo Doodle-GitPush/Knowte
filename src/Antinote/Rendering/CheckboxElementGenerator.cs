@@ -131,7 +131,7 @@ internal class CheckboxControl : FrameworkElement
 
         if (_isChecked)
         {
-            dc.DrawRoundedRectangle(CheckedBg, null, rect, 2, 2);
+            dc.DrawRoundedRectangle(CheckedBg, null, rect, 6, 6);
 
             if (_checkProgress > 0)
             {
@@ -157,7 +157,7 @@ internal class CheckboxControl : FrameworkElement
         }
         else
         {
-            dc.DrawRoundedRectangle(Brushes.White, BorderPen, rect, 2, 2);
+            dc.DrawRoundedRectangle(Brushes.White, BorderPen, rect, 6, 6);
         }
     }
 
