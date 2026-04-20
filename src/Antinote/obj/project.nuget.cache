@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "sGgSrR1tsUc=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Priyansh\\Desktop\\Antinote\\src\\Antinote\\Antinote.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Priyansh\\.nuget\\packages\\hardcodet.notifyicon.wpf\\2.0.1\\hardcodet.notifyicon.wpf.2.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
