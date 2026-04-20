@@ -12,6 +12,8 @@ public partial class NoteWindow : Window
 {
     private readonly NoteStorage _storage;
     private readonly DispatcherTimer _saveTimer;
+    private readonly DispatcherTimer _clipboardTimer;
+    private string _lastClipboardText = "";
     private readonly SlashCommandEngine _slashEngine;
     private readonly SlashCommandPopup _slashPopup;
     private readonly GhostTextRenderer _ghostRenderer;
@@ -33,6 +35,10 @@ public partial class NoteWindow : Window
         // Save timer
         _saveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
         _saveTimer.Tick += (_, _) => { _saveTimer.Stop(); SaveNote(); };
+
+        // Clipboard monitor timer (started/stopped in Show/Hide)
+        _clipboardTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+        _clipboardTimer.Tick += ClipboardTimer_Tick;
 
         // Slash commands
         var registry = new SlashCommandRegistry();
@@ -68,10 +74,13 @@ public partial class NoteWindow : Window
         Activate();
         Editor.Focus();
         Editor.CaretOffset = Editor.Text.Length;
+        _lastClipboardText = Clipboard.ContainsText() ? Clipboard.GetText().Trim() : "";
+        _clipboardTimer.Start();
     }
 
     public new void Hide()
     {
+        _clipboardTimer.Stop();
         _slashPopup.IsOpen = false;
         FadeOut(() => base.Hide());
     }
@@ -172,6 +181,27 @@ public partial class NoteWindow : Window
     }
 
     private void OnSuggestionsDismissed() => _slashPopup.IsOpen = false;
+
+    private void ClipboardTimer_Tick(object? sender, EventArgs e)
+    {
+        if (DocumentModeDetector.Detect(Editor.Text) != DocumentMode.Paste) return;
+        try
+        {
+            if (!Clipboard.ContainsText()) return;
+            var text = Clipboard.GetText().Trim();
+            if (string.IsNullOrEmpty(text)) return;
+            if (text == _lastClipboardText) return;
+            if (text.StartsWith(" \u2192 ")) return;
+            _lastClipboardText = text;
+            _suppressTextChanged = true;
+            var separator = Editor.Text.TrimEnd().Length > "paste".Length ? "\n\n" : "\n";
+            Editor.Document.Insert(Editor.Document.TextLength, separator + text);
+            Editor.CaretOffset = Editor.Document.TextLength;
+            _suppressTextChanged = false;
+            SaveNote();
+        }
+        catch { /* Clipboard access can fail on some systems */ }
+    }
 
     private void SaveNote() => _storage.Save(Editor.Text);
 
