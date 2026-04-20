@@ -25,6 +25,15 @@ public static class NaturalLanguageMath
         new(@"(\d+(?:\.\d+)?)\s+\w+\s+(divided\s+(?:by|in)|multiplied\s+by|times|plus|minus|percent\s+of)\s+(\d+(?:\.\d+)?)\s+\w+",
             RegexOptions.IgnoreCase);
 
+    private static readonly Regex PowerOp =
+        new(@"(\d+(?:\.\d+)?)\s*\^\s*(\d+(?:\.\d+)?)", RegexOptions.IgnoreCase);
+
+    private static readonly Regex SqrtFix =
+        new(@"\bsqrt\s*\(", RegexOptions.IgnoreCase);
+
+    private static readonly Regex BarePercent =
+        new(@"(\d+(?:\.\d+)?)%");
+
     public static string Normalize(string input)
     {
         // First, try to extract natural sentence pattern like "20 cookies divided in 6 people"
@@ -33,6 +42,15 @@ public static class NaturalLanguageMath
         {
             input = $"{sentenceMatch.Groups[1].Value} {sentenceMatch.Groups[2].Value} {sentenceMatch.Groups[3].Value}";
         }
+
+        // Pow operator
+        input = PowerOp.Replace(input, m => $"Pow({m.Groups[1].Value},{m.Groups[2].Value})");
+
+        // sqrt case fix
+        input = SqrtFix.Replace(input, "Sqrt(");
+
+        // bare percentage
+        input = BarePercent.Replace(input, "($1/100)");
 
         // Replace word numbers
         foreach (var (word, digit) in WordNumbers)

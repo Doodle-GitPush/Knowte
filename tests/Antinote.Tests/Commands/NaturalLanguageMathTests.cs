@@ -69,4 +69,28 @@ public class NaturalLanguageMathTests
         var result = NaturalLanguageMath.Normalize("20 cookies divided in 6 people");
         Assert.That(result, Is.EqualTo("20 / 6"));
     }
+
+    [Test]
+    public void Normalize_Caret_ConvertsToPow()
+    {
+        Assert.That(NaturalLanguageMath.Normalize("2^3"), Is.EqualTo("Pow(2,3)"));
+    }
+
+    [Test]
+    public void Normalize_CaretWithSpaces_ConvertsToPow()
+    {
+        Assert.That(NaturalLanguageMath.Normalize("2 ^ 3"), Is.EqualTo("Pow(2,3)"));
+    }
+
+    [Test]
+    public void Normalize_SqrtLowercase_FixesCase()
+    {
+        Assert.That(NaturalLanguageMath.Normalize("sqrt(9)"), Is.EqualTo("Sqrt(9)"));
+    }
+
+    [Test]
+    public void Normalize_BarePercent_ConvertsToFraction()
+    {
+        Assert.That(NaturalLanguageMath.Normalize("50%"), Is.EqualTo("(50/100)"));
+    }
 }
