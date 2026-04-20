@@ -141,6 +141,12 @@ public class SlashCommandEngine
             new ICSharpCode.AvalonEdit.TextViewPosition(_editor.TextArea.Caret.Line, _editor.TextArea.Caret.Column),
             VisualYPosition.LineBottom);
         var screenPos = _editor.TextArea.TextView.PointToScreen(pos);
-        return (screenPos.X, screenPos.Y);
+
+        // PointToScreen returns physical pixels; Popup.HorizontalOffset/VerticalOffset
+        // uses device-independent units — divide by DPI scale to convert.
+        var source = System.Windows.PresentationSource.FromVisual(_editor.TextArea.TextView);
+        var dpiX = source?.CompositionTarget?.TransformToDevice.M11 ?? 1.0;
+        var dpiY = source?.CompositionTarget?.TransformToDevice.M22 ?? 1.0;
+        return (screenPos.X / dpiX, screenPos.Y / dpiY);
     }
 }
