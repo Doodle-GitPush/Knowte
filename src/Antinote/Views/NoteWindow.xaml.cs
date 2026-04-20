@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Antinote.Rendering;
 using Antinote.Storage;
 
 namespace Antinote.Views;
@@ -15,6 +16,8 @@ public partial class NoteWindow : Window
     {
         InitializeComponent();
         _storage = storage;
+
+        Editor.TextArea.TextView.LineTransformers.Add(new MathLineColorizer());
 
         _saveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
         _saveTimer.Tick += (_, _) => { _saveTimer.Stop(); SaveNote(); };
