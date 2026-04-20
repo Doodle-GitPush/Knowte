@@ -113,6 +113,26 @@ public class SlashCommandEngine
             return;
         }
 
+        if (mode == DocumentMode.Convert)
+        {
+            var result = UnitConverter.TryConvert(lineText);
+            if (result != null)
+            {
+                _editor.Document.Replace(line.Offset, line.Length, lineText + $" \u2192 {result}");
+                _editor.CaretOffset = line.Offset + lineText.Length + result.Length + 5;
+            }
+            _editor.Document.Insert(_editor.CaretOffset, "\n");
+            return;
+        }
+
+        // Extra blank line gap after the mode declaration line
+        if (line.LineNumber == 1 && mode != DocumentMode.None)
+        {
+            var modePrefix = mode == DocumentMode.List ? "\n\n- " : mode == DocumentMode.Checklist ? "\n\n- [ ] " : "\n\n";
+            _editor.Document.Insert(_editor.CaretOffset, modePrefix);
+            return;
+        }
+
         var continuation = GetEnterContinuation(mode, lineText);
         if (continuation == null)
         {

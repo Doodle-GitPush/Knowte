@@ -148,7 +148,20 @@ public partial class NoteWindow : Window
 
     private void UpdateGhostText()
     {
-        if (DocumentModeDetector.Detect(Editor.Text) != DocumentMode.Math)
+        var mode = DocumentModeDetector.Detect(Editor.Text);
+
+        if (mode == DocumentMode.Convert)
+        {
+            var cvtOffset = Editor.CaretOffset;
+            if (cvtOffset > Editor.Document.TextLength) return;
+            var cvtLine = Editor.Document.GetLineByOffset(cvtOffset);
+            var cvtText = Editor.Document.GetText(cvtLine.Offset, cvtLine.Length).Trim();
+            var cvtResult = UnitConverter.TryConvert(cvtText);
+            _ghostRenderer.SetGhost(cvtResult != null ? $" \u2192 {cvtResult}" : null);
+            return;
+        }
+
+        if (mode != DocumentMode.Math)
         {
             _ghostRenderer.SetGhost(null);
             return;
