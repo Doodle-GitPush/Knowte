@@ -1,0 +1,55 @@
+<Popup x:Class="Antinote.Views.SlashCommandPopup"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       AllowsTransparency="True"
+       Placement="Absolute"
+       StaysOpen="True">
+
+    <Border Background="White"
+            CornerRadius="8"
+            Padding="4"
+            MinWidth="200"
+            MaxHeight="220">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="16" ShadowDepth="2"
+                              Direction="270" Color="#000000" Opacity="0.15"/>
+        </Border.Effect>
+
+        <ListBox x:Name="CommandList"
+                 BorderThickness="0"
+                 Background="Transparent"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 MouseLeftButtonUp="CommandList_MouseLeftButtonUp">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="8,4">
+                        <TextBlock Text="/"
+                                   Foreground="#AAAAAA"
+                                   FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
+                                   FontSize="13"/>
+                        <TextBlock Text="{Binding Name}"
+                                   FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
+                                   FontSize="13"
+                                   Foreground="#1A1A1A"
+                                   Width="90"/>
+                        <TextBlock Text="{Binding Description}"
+                                   FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
+                                   FontSize="11"
+                                   Foreground="#AAAAAA"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#F0F0F0"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+    </Border>
+</Popup>
