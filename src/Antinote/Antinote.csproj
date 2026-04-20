@@ -12,4 +12,9 @@
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="Assets\Fonts\JetBrainsMono-Regular.ttf" />
+    <Resource Include="Assets\Icons\tray.ico" />
+  </ItemGroup>
+
 </Project>
