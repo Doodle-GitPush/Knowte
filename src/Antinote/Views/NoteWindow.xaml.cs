@@ -136,7 +136,7 @@ public partial class NoteWindow : Window
 
     private void UpdateGhostText()
     {
-        if (!MathModeDetector.IsActive(Editor.Text))
+        if (DocumentModeDetector.Detect(Editor.Text) != DocumentMode.Math)
         {
             _ghostRenderer.SetGhost(null);
             return;
