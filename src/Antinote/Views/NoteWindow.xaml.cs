@@ -41,7 +41,7 @@ public partial class NoteWindow : Window
             _suppressTextChanged = false;
         };
 
-        DateLabel.Text = DateTime.Today.ToString("dddd, MMMM d");
+        DateLabel.Text = DateTime.Today.ToString("MMM d");
 
         Editor.TextChanged += Editor_TextChanged;
         Editor.TextArea.PreviewKeyDown += Editor_PreviewKeyDown;
@@ -124,8 +124,10 @@ public partial class NoteWindow : Window
         Placeholder.Visibility = string.IsNullOrWhiteSpace(Editor.Text)
             ? Visibility.Visible : Visibility.Collapsed;
 
-    private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>
-        DragMove();
+    private void MainBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (!e.Handled) DragMove();
+    }
 
     private void FadeIn()
     {
