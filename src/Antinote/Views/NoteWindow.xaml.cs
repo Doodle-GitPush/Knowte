@@ -14,6 +14,8 @@ public partial class NoteWindow : Window
     private readonly DispatcherTimer _saveTimer;
     private readonly SlashCommandEngine _slashEngine;
     private readonly SlashCommandPopup _slashPopup;
+    private readonly GhostTextRenderer _ghostRenderer;
+    private readonly CheckboxElementGenerator _checkboxGenerator;
     private bool _suppressTextChanged;
 
     public NoteWindow(NoteStorage storage)
@@ -21,11 +23,18 @@ public partial class NoteWindow : Window
         InitializeComponent();
         _storage = storage;
 
+        // Renderers
         Editor.TextArea.TextView.LineTransformers.Add(new MathLineColorizer());
+        _checkboxGenerator = new CheckboxElementGenerator(Editor.Document);
+        Editor.TextArea.TextView.ElementGenerators.Add(_checkboxGenerator);
+        _ghostRenderer = new GhostTextRenderer(Editor);
+        Editor.TextArea.TextView.BackgroundRenderers.Add(_ghostRenderer);
 
+        // Save timer
         _saveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
         _saveTimer.Tick += (_, _) => { _saveTimer.Stop(); SaveNote(); };
 
+        // Slash commands
         var registry = new SlashCommandRegistry();
         var mathEval = new MathEvaluator();
         _slashEngine = new SlashCommandEngine(Editor, registry, mathEval);
@@ -41,7 +50,7 @@ public partial class NoteWindow : Window
             _suppressTextChanged = false;
         };
 
-        DateLabel.Text = DateTime.Today.ToString("dddd, MMMM d");
+        DateLabel.Text = DateTime.Today.ToString("MMM d");
 
         Editor.TextChanged += Editor_TextChanged;
         Editor.TextArea.PreviewKeyDown += Editor_PreviewKeyDown;
@@ -69,6 +78,21 @@ public partial class NoteWindow : Window
 
     private void Editor_PreviewKeyDown(object sender, KeyEventArgs e)
     {
+        // Ghost text: Tab accepts
+        if (e.Key == Key.Tab && _ghostRenderer.GhostText != null && !_slashPopup.IsOpen)
+        {
+            _ghostRenderer.Accept();
+            e.Handled = true;
+            return;
+        }
+
+        // Ghost text: any non-modifier key dismisses
+        if (_ghostRenderer.GhostText != null && e.Key != Key.LeftShift && e.Key != Key.RightShift
+            && e.Key != Key.LeftCtrl && e.Key != Key.RightCtrl && e.Key != Key.LeftAlt && e.Key != Key.RightAlt)
+        {
+            _ghostRenderer.SetGhost(null);
+        }
+
         if (_slashPopup.IsOpen)
         {
             switch (e.Key)
@@ -104,15 +128,43 @@ public partial class NoteWindow : Window
     {
         if (_suppressTextChanged) return;
         UpdatePlaceholder();
+        UpdateGhostText();
         _slashEngine.HandleTextChanged();
         _saveTimer.Stop();
         _saveTimer.Start();
     }
 
+    private void UpdateGhostText()
+    {
+        if (!MathModeDetector.IsActive(Editor.Text))
+        {
+            _ghostRenderer.SetGhost(null);
+            return;
+        }
+
+        var caretOffset = Editor.CaretOffset;
+        if (caretOffset > Editor.Document.TextLength) return;
+
+        var line = Editor.Document.GetLineByOffset(caretOffset);
+        var lineText = Editor.Document.GetText(line.Offset, line.Length).Trim();
+
+        if (lineText.Contains(" \u2192 ") || string.Equals(lineText, "math", StringComparison.OrdinalIgnoreCase)
+            || string.IsNullOrWhiteSpace(lineText))
+        {
+            _ghostRenderer.SetGhost(null);
+            return;
+        }
+
+        var normalized = NaturalLanguageMath.Normalize(lineText);
+        var result = new MathEvaluator().Evaluate(normalized);
+
+        _ghostRenderer.SetGhost(result != null ? $" \u2192 {result}" : null);
+    }
+
     private void OnSuggestionsChanged(List<SlashCommand> commands, (double X, double Y) pos)
     {
         _slashPopup.HorizontalOffset = pos.X;
-        _slashPopup.VerticalOffset = pos.Y + 4;
+        _slashPopup.VerticalOffset = pos.Y + 6;
         _slashPopup.UpdateCommands(commands);
     }
 
@@ -124,8 +176,10 @@ public partial class NoteWindow : Window
         Placeholder.Visibility = string.IsNullOrWhiteSpace(Editor.Text)
             ? Visibility.Visible : Visibility.Collapsed;
 
-    private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>
-        DragMove();
+    private void MainBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (!e.Handled) DragMove();
+    }
 
     private void FadeIn()
     {

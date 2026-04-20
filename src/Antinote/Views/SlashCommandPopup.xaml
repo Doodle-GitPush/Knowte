@@ -5,51 +5,66 @@
        Placement="Absolute"
        StaysOpen="True">
 
-    <Border Background="White"
-            CornerRadius="8"
+    <Border x:Name="PopupBorder"
+            Background="White"
+            CornerRadius="10"
             Padding="4"
-            MinWidth="200"
-            MaxHeight="220">
+            MinWidth="220"
+            Opacity="0"
+            RenderTransformOrigin="0.5,0">
+        <Border.RenderTransform>
+            <TranslateTransform x:Name="SlideTransform" Y="8"/>
+        </Border.RenderTransform>
         <Border.Effect>
-            <DropShadowEffect BlurRadius="16" ShadowDepth="2"
-                              Direction="270" Color="#000000" Opacity="0.15"/>
+            <DropShadowEffect BlurRadius="12" ShadowDepth="2"
+                              Direction="270" Color="#000000" Opacity="0.10"/>
         </Border.Effect>
 
         <ListBox x:Name="CommandList"
                  BorderThickness="0"
                  Background="Transparent"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                  MouseLeftButtonUp="CommandList_MouseLeftButtonUp">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="8,4">
-                        <TextBlock Text="/"
-                                   Foreground="#AAAAAA"
-                                   FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
-                                   FontSize="13"/>
-                        <TextBlock Text="{Binding Name}"
-                                   FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
-                                   FontSize="13"
-                                   Foreground="#1A1A1A"
-                                   Width="90"/>
-                        <TextBlock Text="{Binding Description}"
-                                   FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
-                                   FontSize="11"
-                                   Foreground="#AAAAAA"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Padding" Value="0"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#F0F0F0"/>
-                        </Trigger>
-                    </Style.Triggers>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="Bd" CornerRadius="6" Padding="10,6"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Bd" Property="Background" Value="#F0F0F0"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Bd" Property="Background" Value="#F5F5F5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
+                                   FontSize="13" Foreground="#AAAAAA" Text="/"/>
+                        <TextBlock FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
+                                   FontSize="13" Foreground="#1A1A1A"
+                                   Text="{Binding Name}" MinWidth="80"/>
+                        <TextBlock FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
+                                   FontSize="11" Foreground="#BBBBBB"
+                                   Text="{Binding Description}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
     </Border>
 </Popup>

@@ -8,6 +8,7 @@ public class SlashCommandRegistry
         new("list",      "Bulleted list item",           "- "),
         new("checklist", "Checklist with checkboxes",    "- [ ] "),
         new("todo",      "Single to-do item",            "- [ ] "),
+        new("x",         "Mark task done",               ""),
         new("date",      "Insert today's date",          DateTime.Today.ToString("MMMM d, yyyy")),
         new("time",      "Insert current time",          DateTime.Now.ToString("HH:mm")),
         new("divider",   "Section separator",            "---"),

@@ -49,14 +49,35 @@ public class SlashCommandEngine
         SuggestionsChanged?.Invoke(matches, pos);
     }
 
+    public static string? ToggleChecklistOnLine(string lineText)
+    {
+        if (lineText.StartsWith("- [ ] "))
+            return "- [x] " + lineText[6..];
+        if (lineText.StartsWith("- [x] "))
+            return "- [ ] " + lineText[6..];
+        return null;
+    }
+
     public void ApplyCommand(SlashCommand command)
     {
         var caretOffset = _editor.CaretOffset;
         var word = GetCurrentWord();
         var lineStart = caretOffset - word.Length;
 
-        _editor.Document.Replace(lineStart, word.Length, command.InsertText);
+        if (command.Name == "x")
+        {
+            _editor.Document.Replace(lineStart, word.Length, "");
+            var line = _editor.Document.GetLineByOffset(lineStart);
+            var lineText = _editor.Document.GetText(line.Offset, line.Length);
+            var toggled = ToggleChecklistOnLine(lineText);
+            if (toggled != null)
+                _editor.Document.Replace(line.Offset, line.Length, toggled);
+            _editor.CaretOffset = line.Offset + (toggled ?? lineText).Length;
+            _editor.Focus();
+            return;
+        }
 
+        _editor.Document.Replace(lineStart, word.Length, command.InsertText);
         var newOffset = lineStart + command.InsertText.Length - command.CursorOffsetFromEnd;
         _editor.CaretOffset = newOffset;
         _editor.Focus();

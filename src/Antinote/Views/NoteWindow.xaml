@@ -7,8 +7,8 @@
         Background="Transparent"
         ShowInTaskbar="False"
         Topmost="True"
-        Width="600" Height="400"
-        MinWidth="400" MinHeight="250"
+        Width="450" Height="630"
+        MinWidth="300" MinHeight="400"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
         Opacity="0">
@@ -19,55 +19,47 @@
         </FontFamily>
     </Window.Resources>
 
-    <Border CornerRadius="16"
+    <Border x:Name="MainBorder"
+            CornerRadius="16"
             Background="White"
-            Margin="12">
+            Margin="12"
+            MouseLeftButtonDown="MainBorder_MouseLeftButtonDown">
         <Border.Effect>
             <DropShadowEffect BlurRadius="24" ShadowDepth="4"
                               Direction="270" Color="#000000" Opacity="0.18"/>
         </Border.Effect>
 
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            <avalonedit:TextEditor
+                x:Name="Editor"
+                Background="Transparent"
+                BorderThickness="0"
+                Padding="24,20,24,36"
+                FontFamily="{StaticResource JetBrainsMono}"
+                FontSize="14"
+                Foreground="#1A1A1A"
+                WordWrap="True"
+                ShowLineNumbers="False"
+                VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Disabled"/>
 
-            <Border Grid.Row="0" Background="Transparent"
-                    CornerRadius="16,16,0,0"
-                    MouseLeftButtonDown="Header_MouseLeftButtonDown">
-                <TextBlock x:Name="DateLabel"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Left"
-                           Margin="24,0,0,0"
-                           FontFamily="{StaticResource JetBrainsMono}"
-                           FontSize="12"
-                           Foreground="#AAAAAA"/>
-            </Border>
+            <TextBlock x:Name="Placeholder"
+                       Text="Start writing..."
+                       FontFamily="{StaticResource JetBrainsMono}"
+                       FontSize="14"
+                       Foreground="#CCCCCC"
+                       Margin="28,20,0,0"
+                       VerticalAlignment="Top"
+                       IsHitTestVisible="False"/>
 
-            <Grid Grid.Row="1">
-                <avalonedit:TextEditor
-                    x:Name="Editor"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Padding="24,8,24,24"
-                    FontFamily="{StaticResource JetBrainsMono}"
-                    FontSize="14"
-                    Foreground="#1A1A1A"
-                    WordWrap="True"
-                    ShowLineNumbers="False"
-                    VerticalScrollBarVisibility="Auto"
-                    HorizontalScrollBarVisibility="Disabled"/>
-
-                <TextBlock x:Name="Placeholder"
-                           Text="Start writing..."
-                           FontFamily="{StaticResource JetBrainsMono}"
-                           FontSize="14"
-                           Foreground="#CCCCCC"
-                           Margin="28,8,0,0"
-                           VerticalAlignment="Top"
-                           IsHitTestVisible="False"/>
-            </Grid>
+            <TextBlock x:Name="DateLabel"
+                       FontFamily="{StaticResource JetBrainsMono}"
+                       FontSize="10"
+                       Foreground="#DDDDDD"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Margin="0,0,20,14"
+                       IsHitTestVisible="False"/>
         </Grid>
     </Border>
 </Window>
