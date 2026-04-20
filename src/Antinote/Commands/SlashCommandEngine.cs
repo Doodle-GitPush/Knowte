@@ -108,9 +108,8 @@ public class SlashCommandEngine
                 _editor.Document.Replace(line.Offset, line.Length, formatted);
                 _editor.CaretOffset = line.Offset + formatted.Length;
             }
-            // AvalonEdit stores \n internally — don't use Environment.NewLine
             _editor.Document.Insert(_editor.CaretOffset, "\n");
-            _editor.CaretOffset += 1;
+            // AvalonEdit auto-advances caret after Document.Insert — no manual += needed
             return;
         }
 
@@ -120,13 +119,12 @@ public class SlashCommandEngine
             _editor.Document.Replace(line.Offset, line.Length, "");
             _editor.CaretOffset = line.Offset;
             _editor.Document.Insert(_editor.CaretOffset, "\n");
-            _editor.CaretOffset += 1;
+            // caret auto-advanced by AvalonEdit
         }
         else
         {
-            // continuation already uses \n which matches AvalonEdit's internal storage
             _editor.Document.Insert(_editor.CaretOffset, continuation);
-            _editor.CaretOffset += continuation.Length;
+            // caret auto-advanced by AvalonEdit
         }
     }
 
