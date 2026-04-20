@@ -12,23 +12,23 @@ public class SlashCommandRegistryTests
     public void SetUp() => _registry = new SlashCommandRegistry();
 
     [Test]
-    public void GetAll_ReturnsTenCommands()
+    public void GetAll_ReturnsSixCommands()
     {
-        Assert.That(_registry.GetAll().Count, Is.EqualTo(10));
+        Assert.That(_registry.GetAll().Count, Is.EqualTo(6));
     }
 
     [Test]
     public void Filter_EmptyQuery_ReturnsAll()
     {
-        Assert.That(_registry.Filter("").Count, Is.EqualTo(10));
+        Assert.That(_registry.Filter("").Count, Is.EqualTo(6));
     }
 
     [Test]
     public void Filter_PartialMatch_ReturnsMatches()
     {
-        var results = _registry.Filter("ma");
+        var results = _registry.Filter("da");
         Assert.That(results.Count, Is.EqualTo(1));
-        Assert.That(results[0].Name, Is.EqualTo("math"));
+        Assert.That(results[0].Name, Is.EqualTo("date"));
     }
 
     [Test]
@@ -40,7 +40,7 @@ public class SlashCommandRegistryTests
     [Test]
     public void Filter_CaseInsensitive()
     {
-        var results = _registry.Filter("MA");
+        var results = _registry.Filter("DA");
         Assert.That(results.Count, Is.EqualTo(1));
     }
 

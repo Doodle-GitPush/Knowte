@@ -58,6 +58,18 @@ public class SlashCommandEngine
         return null;
     }
 
+    public static string? GetEnterContinuation(DocumentMode mode, string lineText)
+    {
+        return mode switch
+        {
+            DocumentMode.List when lineText == "- "    => null,
+            DocumentMode.List when lineText.StartsWith("- ") => "\n- ",
+            DocumentMode.Checklist when lineText == "- [ ] " => null,
+            DocumentMode.Checklist when lineText.StartsWith("- [ ] ") || lineText.StartsWith("- [x] ") => "\n- [ ] ",
+            _ => "\n"
+        };
+    }
+
     public void ApplyCommand(SlashCommand command)
     {
         var caretOffset = _editor.CaretOffset;
@@ -83,20 +95,34 @@ public class SlashCommandEngine
         _editor.Focus();
     }
 
-    public void HandleEnterKey()
+    public void HandleEnterKey(DocumentMode mode)
     {
         var line = _editor.Document.GetLineByOffset(_editor.CaretOffset);
         var lineText = _editor.Document.GetText(line.Offset, line.Length);
-        var formatted = _mathEvaluator.TryFormatMathLine(lineText);
 
-        if (formatted != null)
+        if (mode == DocumentMode.Math)
         {
-            _editor.Document.Replace(line.Offset, line.Length, formatted);
-            _editor.CaretOffset = line.Offset + formatted.Length;
+            var formatted = _mathEvaluator.TryFormatMathLine(lineText);
+            if (formatted != null)
+            {
+                _editor.Document.Replace(line.Offset, line.Length, formatted);
+                _editor.CaretOffset = line.Offset + formatted.Length;
+            }
+            _editor.TextArea.PerformTextInput("\n");
+            return;
         }
 
-        _editor.Document.Insert(_editor.CaretOffset, Environment.NewLine);
-        _editor.CaretOffset += Environment.NewLine.Length;
+        var continuation = GetEnterContinuation(mode, lineText);
+        if (continuation == null)
+        {
+            _editor.Document.Replace(line.Offset, line.Length, "");
+            _editor.CaretOffset = line.Offset;
+            _editor.TextArea.PerformTextInput("\n");
+        }
+        else
+        {
+            _editor.TextArea.PerformTextInput(continuation);
+        }
     }
 
     private string GetCurrentWord()
@@ -115,6 +141,12 @@ public class SlashCommandEngine
             new ICSharpCode.AvalonEdit.TextViewPosition(_editor.TextArea.Caret.Line, _editor.TextArea.Caret.Column),
             VisualYPosition.LineBottom);
         var screenPos = _editor.TextArea.TextView.PointToScreen(pos);
-        return (screenPos.X, screenPos.Y);
+
+        // PointToScreen returns physical pixels; Popup.HorizontalOffset/VerticalOffset
+        // uses device-independent units — divide by DPI scale to convert.
+        var source = System.Windows.PresentationSource.FromVisual(_editor.TextArea.TextView);
+        var dpiX = source?.CompositionTarget?.TransformToDevice.M11 ?? 1.0;
+        var dpiY = source?.CompositionTarget?.TransformToDevice.M22 ?? 1.0;
+        return (screenPos.X / dpiX, screenPos.Y / dpiY);
     }
 }

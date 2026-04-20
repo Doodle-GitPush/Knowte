@@ -119,7 +119,10 @@ public partial class NoteWindow : Window
 
         if (e.Key == Key.Enter && !_slashPopup.IsOpen)
         {
-            _slashEngine.HandleEnterKey();
+            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+                Editor.TextArea.PerformTextInput("\n");
+            else
+                _slashEngine.HandleEnterKey(DocumentModeDetector.Detect(Editor.Text));
             e.Handled = true;
         }
     }
@@ -136,7 +139,7 @@ public partial class NoteWindow : Window
 
     private void UpdateGhostText()
     {
-        if (!MathModeDetector.IsActive(Editor.Text))
+        if (DocumentModeDetector.Detect(Editor.Text) != DocumentMode.Math)
         {
             _ghostRenderer.SetGhost(null);
             return;

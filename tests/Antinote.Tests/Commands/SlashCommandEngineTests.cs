@@ -40,4 +40,62 @@ public class SlashCommandEngineTests
         var result = SlashCommandEngine.ExtractSlashQuery("/ma th");
         Assert.That(result, Is.Null);
     }
+
+    // List mode continuation
+    [Test]
+    public void GetEnterContinuation_ListMode_ListLine_ReturnsContinuation()
+    {
+        var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.List, "- Buy milk");
+        Assert.That(result, Is.EqualTo("\n- "));
+    }
+
+    [Test]
+    public void GetEnterContinuation_ListMode_EmptyItem_ReturnsNull()
+    {
+        var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.List, "- ");
+        Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public void GetEnterContinuation_ListMode_FreeLine_ReturnsPlain()
+    {
+        var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.List, "just a note");
+        Assert.That(result, Is.EqualTo("\n"));
+    }
+
+    // Checklist mode continuation
+    [Test]
+    public void GetEnterContinuation_ChecklistMode_UncheckedLine_ReturnsContinuation()
+    {
+        var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.Checklist, "- [ ] Buy milk");
+        Assert.That(result, Is.EqualTo("\n- [ ] "));
+    }
+
+    [Test]
+    public void GetEnterContinuation_ChecklistMode_CheckedLine_ReturnsContinuation()
+    {
+        var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.Checklist, "- [x] Done item");
+        Assert.That(result, Is.EqualTo("\n- [ ] "));
+    }
+
+    [Test]
+    public void GetEnterContinuation_ChecklistMode_EmptyItem_ReturnsNull()
+    {
+        var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.Checklist, "- [ ] ");
+        Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public void GetEnterContinuation_ChecklistMode_FreeLine_ReturnsPlain()
+    {
+        var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.Checklist, "just a note");
+        Assert.That(result, Is.EqualTo("\n"));
+    }
+
+    [Test]
+    public void GetEnterContinuation_NoneMode_AnyLine_ReturnsPlain()
+    {
+        var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.None, "- some text");
+        Assert.That(result, Is.EqualTo("\n"));
+    }
 }
