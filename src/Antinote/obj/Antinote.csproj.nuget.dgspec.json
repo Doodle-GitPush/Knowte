@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Priyansh\\Desktop\\Antinote\\src\\Antinote\\Antinote.csproj": {}
+    "C:\\Users\\Priyansh\\Desktop\\Antinote\\.worktrees\\phase2\\src\\Antinote\\Antinote.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Priyansh\\Desktop\\Antinote\\src\\Antinote\\Antinote.csproj": {
+    "C:\\Users\\Priyansh\\Desktop\\Antinote\\.worktrees\\phase2\\src\\Antinote\\Antinote.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Priyansh\\Desktop\\Antinote\\src\\Antinote\\Antinote.csproj",
+        "projectUniqueName": "C:\\Users\\Priyansh\\Desktop\\Antinote\\.worktrees\\phase2\\src\\Antinote\\Antinote.csproj",
         "projectName": "Antinote",
-        "projectPath": "C:\\Users\\Priyansh\\Desktop\\Antinote\\src\\Antinote\\Antinote.csproj",
+        "projectPath": "C:\\Users\\Priyansh\\Desktop\\Antinote\\.worktrees\\phase2\\src\\Antinote\\Antinote.csproj",
         "packagesPath": "C:\\Users\\Priyansh\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Priyansh\\Desktop\\Antinote\\src\\Antinote\\obj\\",
+        "outputPath": "C:\\Users\\Priyansh\\Desktop\\Antinote\\.worktrees\\phase2\\src\\Antinote\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Priyansh\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -44,9 +44,17 @@
         "net10.0-windows7.0": {
           "targetAlias": "net10.0-windows",
           "dependencies": {
+            "AvalonEdit": {
+              "target": "Package",
+              "version": "[6.3.1.120, )"
+            },
             "Hardcodet.NotifyIcon.Wpf": {
               "target": "Package",
               "version": "[2.0.1, )"
+            },
+            "NCalc.Core": {
+              "target": "Package",
+              "version": "[5.12.0, )"
             }
           },
           "imports": [

@@ -1,6 +1,4 @@
-using System;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -12,7 +10,6 @@ public partial class NoteWindow : Window
 {
     private readonly NoteStorage _storage;
     private readonly DispatcherTimer _saveTimer;
-    private bool _suppressTextChanged;
 
     public NoteWindow(NoteStorage storage)
     {
@@ -24,18 +21,21 @@ public partial class NoteWindow : Window
 
         DateLabel.Text = DateTime.Today.ToString("dddd, MMMM d");
 
+        Editor.TextChanged += Editor_TextChanged;
+
         Deactivated += (_, _) => Hide();
         KeyDown += (_, e) => { if (e.Key == Key.Escape) Hide(); };
     }
 
     public new void Show()
     {
-        LoadNote();
+        Editor.Text = _storage.LoadToday();
+        UpdatePlaceholder();
         base.Show();
         FadeIn();
         Activate();
         Editor.Focus();
-        Editor.CaretPosition = Editor.Document.ContentEnd;
+        Editor.CaretOffset = Editor.Text.Length;
     }
 
     public new void Hide()
@@ -43,39 +43,18 @@ public partial class NoteWindow : Window
         FadeOut(() => base.Hide());
     }
 
-    private void LoadNote()
-    {
-        _suppressTextChanged = true;
-        var content = _storage.LoadToday();
-        var doc = new FlowDocument();
-        var para = new Paragraph(new Run(content));
-        doc.Blocks.Add(para);
-        Editor.Document = doc;
-        UpdatePlaceholder();
-        _suppressTextChanged = false;
-    }
+    private void SaveNote() => _storage.Save(Editor.Text);
 
-    private void SaveNote()
+    private void Editor_TextChanged(object? sender, EventArgs e)
     {
-        var text = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text;
-        _storage.Save(text.TrimEnd());
-    }
-
-    private void Editor_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-    {
-        if (_suppressTextChanged) return;
         UpdatePlaceholder();
         _saveTimer.Stop();
         _saveTimer.Start();
     }
 
-    private void UpdatePlaceholder()
-    {
-        var text = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text;
-        Placeholder.Visibility = string.IsNullOrWhiteSpace(text)
-            ? Visibility.Visible
-            : Visibility.Collapsed;
-    }
+    private void UpdatePlaceholder() =>
+        Placeholder.Visibility = string.IsNullOrWhiteSpace(Editor.Text)
+            ? Visibility.Visible : Visibility.Collapsed;
 
     private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>
         DragMove();

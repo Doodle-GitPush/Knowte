@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Priyansh\Desktop\Antinote\src\Antinote\obj\Debug\net10.0-windows\
+C:\Users\Priyansh\Desktop\Antinote\.worktrees\phase2\src\Antinote\obj\Debug\net10.0-windows\
 Antinote
 none
 false
 TRACE;DEBUG;NET;NET10_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Users\Priyansh\Desktop\Antinote\src\Antinote\App.xaml
-11407045341
+C:\Users\Priyansh\Desktop\Antinote\.worktrees\phase2\src\Antinote\App.xaml
+2-1100562335
 
-4-427780275
-215-1627903939
-MainWindow.xaml;
+8-1084960189
+2321709415567
+MainWindow.xaml;Views\NoteWindow.xaml;
 
 False
 

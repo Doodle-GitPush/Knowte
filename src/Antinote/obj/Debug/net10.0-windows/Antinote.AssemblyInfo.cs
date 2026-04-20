@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Antinote")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+660980e37291f789971db393f394d5df3c153450")]
 [assembly: System.Reflection.AssemblyProductAttribute("Antinote")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Antinote")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
