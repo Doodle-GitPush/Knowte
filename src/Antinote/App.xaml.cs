@@ -14,6 +14,7 @@ public partial class App : Application
     private NoteWindow? _noteWindow;
     private HotkeyManager? _hotkeyManager;
     private readonly NoteStorage _storage = new();
+    private KnowteSettings _settings = new();
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -22,11 +23,14 @@ public partial class App : Application
 
         Knowte.Startup.StartupManager.Enable();
 
+        _settings = SettingsStorage.Load();
+
         _noteWindow = new NoteWindow(_storage);
         _noteWindow.Show();
         _noteWindow.Hide();
 
-        _hotkeyManager = new HotkeyManager(_noteWindow, ToggleNoteWindow);
+        _hotkeyManager = new HotkeyManager(_noteWindow, ToggleNoteWindow,
+            _settings.HotkeyModifiers, _settings.HotkeyVk);
 
         SetupTrayIcon();
     }
@@ -54,11 +58,38 @@ public partial class App : Application
         var folderItem = new MenuItem { Header = "Open Notes Folder" };
         folderItem.Click += (_, _) => _storage.OpenNotesFolder();
 
+        var shortcutItem = new MenuItem
+        {
+            Header = $"Change Shortcut  ({HotkeyPickerDialog.FormatHotkey(_settings.HotkeyModifiers, _settings.HotkeyVk)})"
+        };
+        shortcutItem.Click += (_, _) =>
+        {
+            var dialog = new HotkeyPickerDialog(_settings.HotkeyModifiers, _settings.HotkeyVk);
+            if (dialog.ShowDialog() == true)
+            {
+                if (_hotkeyManager!.Rebind(dialog.ResultModifiers, dialog.ResultVk))
+                {
+                    _settings.HotkeyModifiers = dialog.ResultModifiers;
+                    _settings.HotkeyVk        = dialog.ResultVk;
+                    SettingsStorage.Save(_settings);
+                    shortcutItem.Header = $"Change Shortcut  ({HotkeyPickerDialog.FormatHotkey(_settings.HotkeyModifiers, _settings.HotkeyVk)})";
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "That shortcut is already in use by another app. Please try a different combination.",
+                        "Knowte", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        };
+
         var exitItem = new MenuItem { Header = "Exit" };
         exitItem.Click += (_, _) => { _hotkeyManager?.Dispose(); _trayIcon?.Dispose(); Shutdown(); };
 
         menu.Items.Add(openItem);
         menu.Items.Add(folderItem);
+        menu.Items.Add(new Separator());
+        menu.Items.Add(shortcutItem);
         menu.Items.Add(new Separator());
         menu.Items.Add(exitItem);
 
