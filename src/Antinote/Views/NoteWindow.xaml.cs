@@ -3,11 +3,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Antinote.Commands;
-using Antinote.Rendering;
-using Antinote.Storage;
+using Knowte.Commands;
+using Knowte.Rendering;
+using Knowte.Storage;
 
-namespace Antinote.Views;
+namespace Knowte.Views;
 
 public partial class NoteWindow : Window
 {

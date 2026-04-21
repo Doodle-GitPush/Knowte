@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Antinote.Hotkey;
+namespace Knowte.Hotkey;
 
 public class HotkeyManager : IDisposable
 {

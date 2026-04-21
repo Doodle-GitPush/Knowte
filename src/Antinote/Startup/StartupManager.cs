@@ -1,10 +1,10 @@
 using Microsoft.Win32;
 
-namespace Antinote.Startup;
+namespace Knowte.Startup;
 
 public static class StartupManager
 {
-    public const string AppName = "Antinote";
+    public const string AppName = "Knowte";
     private const string RunKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
 
     public static void Enable()

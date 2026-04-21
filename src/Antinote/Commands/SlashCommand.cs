@@ -1,4 +1,4 @@
-namespace Antinote.Commands;
+namespace Knowte.Commands;
 
 public record SlashCommand(
     string Name,

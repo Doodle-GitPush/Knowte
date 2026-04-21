@@ -1,4 +1,4 @@
-<Popup x:Class="Antinote.Views.SlashCommandPopup"
+<Popup x:Class="Knowte.Views.SlashCommandPopup"
        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        AllowsTransparency="True"

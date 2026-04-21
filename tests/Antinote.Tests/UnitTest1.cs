@@ -1,4 +1,4 @@
-﻿namespace Antinote.Tests;
+﻿namespace Knowte.Tests;
 
 public class Tests
 {

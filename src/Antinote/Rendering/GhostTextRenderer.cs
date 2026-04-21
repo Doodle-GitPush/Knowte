@@ -5,7 +5,7 @@ using System.Windows.Threading;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Rendering;
 
-namespace Antinote.Rendering;
+namespace Knowte.Rendering;
 
 public class GhostTextRenderer : IBackgroundRenderer
 {

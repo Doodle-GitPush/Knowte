@@ -1,6 +1,6 @@
 using NCalc;
 
-namespace Antinote.Commands;
+namespace Knowte.Commands;
 
 public class MathEvaluator
 {

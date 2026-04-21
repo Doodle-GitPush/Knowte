@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Antinote.Storage;
+namespace Knowte.Storage;
 
 public class NoteStorage
 {
@@ -9,7 +9,7 @@ public class NoteStorage
     public NoteStorage(string notesDir) { _notesDir = notesDir; }
 
     public NoteStorage() : this(
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Antinote", "notes"))
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Knowte", "notes"))
     { }
 
     public string TodayName => DateTime.Today.ToString("yyyy-MM-dd");

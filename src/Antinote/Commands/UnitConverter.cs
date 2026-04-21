@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Antinote.Commands;
+namespace Knowte.Commands;
 
 /// <summary>
 /// Parses and evaluates unit conversion expressions of the form "N unit1 to unit2".

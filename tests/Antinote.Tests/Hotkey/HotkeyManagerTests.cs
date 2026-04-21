@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using Antinote.Hotkey;
+using Knowte.Hotkey;
 
-namespace Antinote.Tests.Hotkey;
+namespace Knowte.Tests.Hotkey;
 
 [TestFixture]
 public class HotkeyManagerTests

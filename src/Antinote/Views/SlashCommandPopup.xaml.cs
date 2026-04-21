@@ -2,9 +2,9 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Antinote.Commands;
+using Knowte.Commands;
 
-namespace Antinote.Views;
+namespace Knowte.Views;
 
 public partial class SlashCommandPopup : Popup
 {

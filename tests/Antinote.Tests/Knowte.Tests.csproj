@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Antinote\Antinote.csproj" />
+    <ProjectReference Include="..\..\src\Antinote\Knowte.csproj" />
   </ItemGroup>
 
 </Project>

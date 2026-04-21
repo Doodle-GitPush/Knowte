@@ -1,7 +1,7 @@
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Rendering;
 
-namespace Antinote.Commands;
+namespace Knowte.Commands;
 
 public class SlashCommandEngine
 {

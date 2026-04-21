@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using Antinote.Startup;
+using Knowte.Startup;
 
-namespace Antinote.Tests.Startup;
+namespace Knowte.Tests.Startup;
 
 [TestFixture]
 public class StartupManagerTests
@@ -9,6 +9,6 @@ public class StartupManagerTests
     [Test]
     public void RegistryKeyName_IsCorrect()
     {
-        Assert.That(StartupManager.AppName, Is.EqualTo("Antinote"));
+        Assert.That(StartupManager.AppName, Is.EqualTo("Knowte"));
     }
 }

@@ -3,7 +3,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
-namespace Antinote.Views;
+namespace Knowte.Views;
 
 public partial class TimerWidget : Window
 {

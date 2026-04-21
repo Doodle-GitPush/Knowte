@@ -2,11 +2,11 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
-using Antinote.Hotkey;
-using Antinote.Storage;
-using Antinote.Views;
+using Knowte.Hotkey;
+using Knowte.Storage;
+using Knowte.Views;
 
-namespace Antinote;
+namespace Knowte;
 
 public partial class App : Application
 {
@@ -20,7 +20,7 @@ public partial class App : Application
         base.OnStartup(e);
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-        Antinote.Startup.StartupManager.Enable();
+        Knowte.Startup.StartupManager.Enable();
 
         _noteWindow = new NoteWindow(_storage);
         _noteWindow.Show();
@@ -44,7 +44,7 @@ public partial class App : Application
         _trayIcon = (TaskbarIcon)FindResource("TrayIcon");
         _trayIcon.IconSource = new System.Windows.Media.Imaging.BitmapImage(
             new Uri("pack://application:,,,/Assets/Icons/tray.ico"));
-        _trayIcon.ToolTipText = "Antinote";
+        _trayIcon.ToolTipText = "Knowte";
 
         var menu = new ContextMenu();
 
@@ -68,7 +68,7 @@ public partial class App : Application
 
     public void ShowTimerNotification(string message)
     {
-        _trayIcon?.ShowBalloonTip("Antinote", message, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+        _trayIcon?.ShowBalloonTip("Knowte", message, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
     }
 
     protected override void OnExit(ExitEventArgs e)

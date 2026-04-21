@@ -1,4 +1,4 @@
-namespace Antinote.Commands;
+namespace Knowte.Commands;
 
 [Flags]
 public enum DocumentMode

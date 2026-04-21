@@ -1,8 +1,8 @@
 using System.IO;
 using NUnit.Framework;
-using Antinote.Storage;
+using Knowte.Storage;
 
-namespace Antinote.Tests.Storage;
+namespace Knowte.Tests.Storage;
 
 [TestFixture]
 public class NoteStorageTests

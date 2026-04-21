@@ -2,7 +2,7 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 
-namespace Antinote.Rendering;
+namespace Knowte.Rendering;
 
 public class MathLineColorizer : DocumentColorizingTransformer
 {

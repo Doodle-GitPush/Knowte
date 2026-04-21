@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Antinote.Commands;
+namespace Knowte.Commands;
 
 public static class TimerParser
 {

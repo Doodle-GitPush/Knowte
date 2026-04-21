@@ -1,6 +1,6 @@
-using Antinote.Commands;
+using Knowte.Commands;
 
-namespace Antinote.Tests.Commands;
+namespace Knowte.Tests.Commands;
 
 [TestFixture]
 public class UnitConverterTests
