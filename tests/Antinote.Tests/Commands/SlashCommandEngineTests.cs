@@ -98,4 +98,29 @@ public class SlashCommandEngineTests
         var result = SlashCommandEngine.GetEnterContinuation(DocumentMode.None, "- some text");
         Assert.That(result, Is.EqualTo("\n"));
     }
+
+    // Multi-mode combinations
+    [Test]
+    public void GetEnterContinuation_MathAndChecklist_ChecklistWins()
+    {
+        var mode = DocumentMode.Math | DocumentMode.Checklist;
+        var result = SlashCommandEngine.GetEnterContinuation(mode, "- [ ] Buy milk");
+        Assert.That(result, Is.EqualTo("\n- [ ] "));
+    }
+
+    [Test]
+    public void GetEnterContinuation_MathAndList_ListWins()
+    {
+        var mode = DocumentMode.Math | DocumentMode.List;
+        var result = SlashCommandEngine.GetEnterContinuation(mode, "- Buy milk");
+        Assert.That(result, Is.EqualTo("\n- "));
+    }
+
+    [Test]
+    public void GetEnterContinuation_ChecklistTakesPriorityOverList()
+    {
+        var mode = DocumentMode.List | DocumentMode.Checklist;
+        var result = SlashCommandEngine.GetEnterContinuation(mode, "any line");
+        Assert.That(result, Is.EqualTo("\n- [ ] "));
+    }
 }

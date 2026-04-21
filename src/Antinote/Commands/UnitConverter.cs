@@ -103,15 +103,52 @@ public static class UnitConverter
         ["hectares"] = 10_000.0,
 
         // Currency → USD (fixed rates, April 2025 approximations)
-        ["usd"] = 1.0,
-        ["eur"] = 1.0869565,   // 1 EUR = 1.0869565 USD
-        ["gbp"] = 1.2658228,   // 1 GBP = 1.2658228 USD
-        ["jpy"] = 0.006711,    // 1 JPY = 0.006711 USD
-        ["cad"] = 0.7353,      // 1 CAD = 0.7353 USD
-        ["aud"] = 0.6410,      // 1 AUD = 0.6410 USD
-        ["chf"] = 1.1236,      // 1 CHF = 1.1236 USD
-        ["cny"] = 0.13755,     // 1 CNY = 0.13755 USD
-        ["inr"] = 0.012,       // 1 INR = 0.012 USD
+        ["usd"]     = 1.0,
+        ["$"]       = 1.0,
+        ["dollar"]  = 1.0,
+        ["dollars"] = 1.0,
+        ["eur"]     = 1.0869565,
+        ["€"]       = 1.0869565,
+        ["euro"]    = 1.0869565,
+        ["euros"]   = 1.0869565,
+        ["gbp"]     = 1.2658228,
+        ["£"]       = 1.2658228,
+        ["pound"]   = 1.2658228,
+        ["pounds"]  = 1.2658228,
+        ["jpy"]     = 0.006711,
+        ["¥"]       = 0.006711,
+        ["yen"]     = 0.006711,
+        ["cad"]     = 0.7353,
+        ["aud"]     = 0.6410,
+        ["chf"]     = 1.1236,
+        ["franc"]   = 1.1236,
+        ["francs"]  = 1.1236,
+        ["cny"]     = 0.13755,
+        ["yuan"]    = 0.13755,
+        ["rmb"]     = 0.13755,
+        ["inr"]     = 0.011905,  // 1 INR ≈ 0.011905 USD  (1 USD ≈ 84 INR)
+        ["₹"]       = 0.011905,
+        ["rupee"]   = 0.011905,
+        ["rupees"]  = 0.011905,
+        ["krw"]     = 0.000724,  // 1 KRW ≈ 0.000724 USD
+        ["won"]     = 0.000724,
+        ["mxn"]     = 0.051,     // 1 MXN ≈ 0.051 USD
+        ["peso"]    = 0.051,
+        ["pesos"]   = 0.051,
+        ["brl"]     = 0.178,     // 1 BRL ≈ 0.178 USD
+        ["real"]    = 0.178,
+        ["reais"]   = 0.178,
+        ["sgd"]     = 0.743,     // 1 SGD ≈ 0.743 USD
+        ["hkd"]     = 0.1282,    // 1 HKD ≈ 0.1282 USD
+        ["nok"]     = 0.091,     // 1 NOK ≈ 0.091 USD
+        ["sek"]     = 0.091,     // 1 SEK ≈ 0.091 USD
+        ["dkk"]     = 0.1456,    // 1 DKK ≈ 0.1456 USD
+        ["aed"]     = 0.2723,    // 1 AED ≈ 0.2723 USD (dirham, pegged)
+        ["dirham"]  = 0.2723,
+        ["dirhams"] = 0.2723,
+        ["sar"]     = 0.2667,    // 1 SAR ≈ 0.2667 USD (riyal, pegged)
+        ["riyal"]   = 0.2667,
+        ["riyals"]  = 0.2667,
     };
 
     // Display labels when converting FROM base
@@ -151,10 +188,26 @@ public static class UnitConverter
         ["acre"] = "acres", ["acres"] = "acres",
         ["ha"]   = "ha",  ["hectare"] = "ha", ["hectares"] = "ha",
 
-        // Currency (display as uppercase)
-        ["usd"] = "USD", ["eur"] = "EUR", ["gbp"] = "GBP", ["jpy"] = "JPY",
-        ["cad"] = "CAD", ["aud"] = "AUD", ["chf"] = "CHF", ["cny"] = "CNY",
-        ["inr"] = "INR",
+        // Currency (display as uppercase code)
+        ["usd"] = "USD", ["$"]  = "USD", ["dollar"]  = "USD", ["dollars"] = "USD",
+        ["eur"] = "EUR", ["€"]  = "EUR", ["euro"]    = "EUR", ["euros"]   = "EUR",
+        ["gbp"] = "GBP", ["£"]  = "GBP", ["pound"]   = "GBP", ["pounds"]  = "GBP",
+        ["jpy"] = "JPY", ["¥"]  = "JPY", ["yen"]     = "JPY",
+        ["cad"] = "CAD",
+        ["aud"] = "AUD",
+        ["chf"] = "CHF", ["franc"] = "CHF", ["francs"] = "CHF",
+        ["cny"] = "CNY", ["yuan"] = "CNY", ["rmb"] = "CNY",
+        ["inr"] = "INR", ["₹"]  = "INR", ["rupee"]   = "INR", ["rupees"]  = "INR",
+        ["krw"] = "KRW", ["won"] = "KRW",
+        ["mxn"] = "MXN", ["peso"] = "MXN", ["pesos"] = "MXN",
+        ["brl"] = "BRL", ["real"] = "BRL", ["reais"] = "BRL",
+        ["sgd"] = "SGD",
+        ["hkd"] = "HKD",
+        ["nok"] = "NOK",
+        ["sek"] = "SEK",
+        ["dkk"] = "DKK",
+        ["aed"] = "AED", ["dirham"] = "AED", ["dirhams"] = "AED",
+        ["sar"] = "SAR", ["riyal"]  = "SAR", ["riyals"]  = "SAR",
     };
 
     // ── Category grouping so we don't cross-convert kg→metres ────────────────
@@ -191,7 +244,20 @@ public static class UnitConverter
 
     private static readonly HashSet<string> CurrencyUnits = new(StringComparer.OrdinalIgnoreCase)
     {
-        "usd","eur","gbp","jpy","cad","aud","chf","cny","inr",
+        "usd","$","dollar","dollars",
+        "eur","€","euro","euros",
+        "gbp","£","pound","pounds",
+        "jpy","¥","yen",
+        "cad","aud",
+        "chf","franc","francs",
+        "cny","yuan","rmb",
+        "inr","₹","rupee","rupees",
+        "krw","won",
+        "mxn","peso","pesos",
+        "brl","real","reais",
+        "sgd","hkd","nok","sek","dkk",
+        "aed","dirham","dirhams",
+        "sar","riyal","riyals",
     };
 
     private static readonly HashSet<string> TemperatureUnits = new(StringComparer.OrdinalIgnoreCase)

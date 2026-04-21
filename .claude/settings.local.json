@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dotnet new *)"
+      "Bash(dotnet new *)",
+      "Bash(dotnet publish *)",
+      "Bash(powershell -ExecutionPolicy Bypass -File publish.ps1)"
     ]
   }
 }

@@ -12,15 +12,23 @@ public class SlashCommandRegistryTests
     public void SetUp() => _registry = new SlashCommandRegistry();
 
     [Test]
-    public void GetAll_ReturnsSixCommands()
+    public void GetAll_ReturnsAllCommands()
     {
-        Assert.That(_registry.GetAll().Count, Is.EqualTo(6));
+        Assert.That(_registry.GetAll().Count, Is.EqualTo(13));
     }
 
     [Test]
     public void Filter_EmptyQuery_ReturnsAll()
     {
-        Assert.That(_registry.Filter("").Count, Is.EqualTo(6));
+        Assert.That(_registry.Filter("").Count, Is.EqualTo(13));
+    }
+
+    [Test]
+    public void Filter_ModeCommands_Present()
+    {
+        Assert.That(_registry.Filter("math").Any(c => c.InsertText == "math;"), Is.True);
+        Assert.That(_registry.Filter("checklist").Any(c => c.InsertText == "checklist;"), Is.True);
+        Assert.That(_registry.Filter("convert").Any(c => c.InsertText == "convert;"), Is.True);
     }
 
     [Test]

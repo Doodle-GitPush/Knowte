@@ -93,11 +93,13 @@ internal class CheckboxControl : FrameworkElement
     {
         _isChecked = isChecked;
         _checkProgress = isChecked ? 1.0 : 0.0;
-        Width = 14;
-        Height = 14;
+        Width = 16;
+        Height = 22;   // taller than the circle to create line spacing
         Cursor = Cursors.Hand;
-        VerticalAlignment = VerticalAlignment.Center;
-        Margin = new Thickness(0, 0, 4, 0);
+        Margin = new Thickness(0, 0, 6, 0);
+        // Tell AvalonEdit where the text baseline sits within this element
+        // so the circle center (at y=11) aligns with text cap-center (~3.5px above baseline)
+        System.Windows.Controls.TextBlock.SetBaselineOffset(this, 14.5);
 
         MouseLeftButtonDown += (_, e) =>
         {
@@ -127,20 +129,19 @@ internal class CheckboxControl : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        var rect = new Rect(1, 1, 12, 12);
+        var rect = new Rect(0, 3, 16, 16);  // circle centered at y=11 within 22px height
 
         if (_isChecked)
         {
-            dc.DrawRoundedRectangle(CheckedBg, null, rect, 6, 6);
+            dc.DrawRoundedRectangle(CheckedBg, null, rect, 7, 7);
 
             if (_checkProgress > 0)
             {
-                // Two-segment checkmark: (3,7)→(5.5,9.5)→(10,4)
-                // Split at ~34% of total path length
+                // Two-segment checkmark: scaled for 14px circle
                 const double seg1End = 0.34;
-                var p0 = new Point(3, 7);
-                var p1 = new Point(5.5, 9.5);
-                var p2 = new Point(10, 4);
+                var p0 = new Point(3.5, 11);
+                var p1 = new Point(6.5, 14);
+                var p2 = new Point(11.5, 7.5);
 
                 if (_checkProgress <= seg1End)
                 {
@@ -157,7 +158,7 @@ internal class CheckboxControl : FrameworkElement
         }
         else
         {
-            dc.DrawRoundedRectangle(Brushes.White, BorderPen, rect, 6, 6);
+            dc.DrawRoundedRectangle(Brushes.White, BorderPen, rect, 7, 7);
         }
     }
 

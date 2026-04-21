@@ -23,6 +23,8 @@ public class GhostTextRenderer : IBackgroundRenderer
 
     public string? GhostText => _ghostText;
 
+    public AcceptedGhostColorizer? AcceptedColorizer { get; set; }
+
     public void SetGhost(string? text)
     {
         if (text == _ghostText) return;
@@ -54,8 +56,10 @@ public class GhostTextRenderer : IBackgroundRenderer
     {
         if (_ghostText == null) return;
         var text = _ghostText;
+        int caretOffset = _editor.CaretOffset;
         SetGhost(null);
-        _editor.Document.Insert(_editor.CaretOffset, text);
+        _editor.Document.Insert(caretOffset, text);
+        AcceptedColorizer?.MarkAccepted(caretOffset, text.Length);
     }
 
     public void Draw(TextView textView, DrawingContext drawingContext)

@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <Resource Include="Assets\Fonts\JetBrainsMono-Regular.ttf" />
+    <Resource Include="Assets\Fonts\ChivoMono-Regular.ttf" />
+    <Resource Include="Assets\Fonts\ChivoMono-Medium.ttf" />
     <Resource Include="Assets\Icons\tray.ico" />
   </ItemGroup>
 

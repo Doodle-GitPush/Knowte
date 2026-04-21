@@ -11,6 +11,7 @@ public class SlashCommandEngine
 
     public event Action<List<SlashCommand>, (double X, double Y)>? SuggestionsChanged;
     public event Action? SuggestionsDismissed;
+    public event Action<TimeSpan, string>? TimerStarted;
 
     public SlashCommandEngine(TextEditor editor, SlashCommandRegistry registry, MathEvaluator mathEvaluator)
     {
@@ -60,14 +61,11 @@ public class SlashCommandEngine
 
     public static string? GetEnterContinuation(DocumentMode mode, string lineText)
     {
-        return mode switch
-        {
-            DocumentMode.List when lineText == "- " => null,
-            DocumentMode.List => "\n- ",
-            DocumentMode.Checklist when lineText == "- [ ] " => null,
-            DocumentMode.Checklist => "\n- [ ] ",
-            _ => "\n"
-        };
+        if (mode.HasFlag(DocumentMode.Checklist))
+            return lineText == "- [ ] " ? null : "\n- [ ] ";
+        if (mode.HasFlag(DocumentMode.List))
+            return lineText == "- " ? null : "\n- ";
+        return "\n";
     }
 
     public void ApplyCommand(SlashCommand command)
@@ -100,7 +98,8 @@ public class SlashCommandEngine
         var line = _editor.Document.GetLineByOffset(_editor.CaretOffset);
         var lineText = _editor.Document.GetText(line.Offset, line.Length);
 
-        if (mode == DocumentMode.Math)
+        // Math-only Enter: format the line with result (skip if list/checklist handles it)
+        if (mode.HasFlag(DocumentMode.Math) && !mode.HasFlag(DocumentMode.List) && !mode.HasFlag(DocumentMode.Checklist))
         {
             var formatted = _mathEvaluator.TryFormatMathLine(lineText);
             if (formatted != null)
@@ -109,11 +108,21 @@ public class SlashCommandEngine
                 _editor.CaretOffset = line.Offset + formatted.Length;
             }
             _editor.Document.Insert(_editor.CaretOffset, "\n");
-            // AvalonEdit auto-advances caret after Document.Insert — no manual += needed
             return;
         }
 
-        if (mode == DocumentMode.Convert)
+        // Timer Enter: parse duration and fire event
+        if (mode.HasFlag(DocumentMode.Timer))
+        {
+            var duration = TimerParser.TryParse(lineText);
+            if (duration.HasValue)
+                TimerStarted?.Invoke(duration.Value, lineText.Trim());
+            _editor.Document.Insert(_editor.CaretOffset, "\n");
+            return;
+        }
+
+        // Convert-only Enter: bake conversion result into the line
+        if (mode.HasFlag(DocumentMode.Convert) && !mode.HasFlag(DocumentMode.List) && !mode.HasFlag(DocumentMode.Checklist))
         {
             var result = UnitConverter.TryConvert(lineText);
             if (result != null)
@@ -128,7 +137,9 @@ public class SlashCommandEngine
         // Extra blank line gap after the mode declaration line
         if (line.LineNumber == 1 && mode != DocumentMode.None)
         {
-            var modePrefix = mode == DocumentMode.List ? "\n\n- " : mode == DocumentMode.Checklist ? "\n\n- [ ] " : "\n\n";
+            var modePrefix = mode.HasFlag(DocumentMode.Checklist) ? "\n\n- [ ] "
+                           : mode.HasFlag(DocumentMode.List) ? "\n\n- "
+                           : "\n\n";
             _editor.Document.Insert(_editor.CaretOffset, modePrefix);
             return;
         }

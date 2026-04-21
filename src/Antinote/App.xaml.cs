@@ -66,6 +66,11 @@ public partial class App : Application
         _trayIcon.TrayMouseDoubleClick += (_, _) => ToggleNoteWindow();
     }
 
+    public void ShowTimerNotification(string message)
+    {
+        _trayIcon?.ShowBalloonTip("Antinote", message, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+    }
+
     protected override void OnExit(ExitEventArgs e)
     {
         _hotkeyManager?.Dispose();
