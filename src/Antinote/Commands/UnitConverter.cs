@@ -53,6 +53,11 @@ public static class UnitConverter
         ["yard"]   = 0.9144,
         ["yards"]  = 0.9144,
 
+        // Screen / design units (96 DPI — CSS standard)
+        ["px"]     = 0.00026458333333, // 1px = 1/96 in
+        ["pt"]     = 0.00035277777778, // 1pt = 1/72 in  (typography points)
+        ["dp"]     = 0.00015875,       // 1dp = 1/160 in (Android density-independent px)
+
         // Weight → gram
         ["g"]      = 1.0,
         ["gram"]   = 1.0,
@@ -165,6 +170,9 @@ public static class UnitConverter
         ["ft"]     = "ft",  ["foot"] = "ft",    ["feet"] = "ft",
         ["in"]     = "in",  ["inch"] = "in",    ["inches"] = "in",
         ["yd"]     = "yd",  ["yard"] = "yd",    ["yards"] = "yd",
+        ["px"]     = "px",
+        ["pt"]     = "pt",
+        ["dp"]     = "dp",
 
         // Weight
         ["g"]      = "g",   ["gram"] = "g",     ["grams"] = "g",
@@ -222,6 +230,7 @@ public static class UnitConverter
         "ft","foot","feet",
         "in","inch","inches",
         "yd","yard","yards",
+        "px","pt","dp",
     };
 
     private static readonly HashSet<string> WeightUnits = new(StringComparer.OrdinalIgnoreCase)
