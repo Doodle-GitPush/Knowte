@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Rendering;
 
@@ -97,6 +98,19 @@ public class SlashCommandEngine
     {
         var line = _editor.Document.GetLineByOffset(_editor.CaretOffset);
         var lineText = _editor.Document.GetText(line.Offset, line.Length);
+
+        // Web search Enter: open browser and clear the line
+        if (lineText.StartsWith("web: ", StringComparison.OrdinalIgnoreCase))
+        {
+            var query = lineText["web: ".Length..].Trim();
+            if (!string.IsNullOrEmpty(query))
+            {
+                var url = $"https://www.google.com/search?q={Uri.EscapeDataString(query)}";
+                Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
+            }
+            _editor.Document.Remove(line.Offset, line.TotalLength);
+            return;
+        }
 
         // Math-only Enter: format the line with result (skip if list/checklist handles it)
         if (mode.HasFlag(DocumentMode.Math) && !mode.HasFlag(DocumentMode.List) && !mode.HasFlag(DocumentMode.Checklist))
