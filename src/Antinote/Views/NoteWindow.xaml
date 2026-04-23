@@ -16,7 +16,7 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontFamily" Value="{StaticResource JetBrainsMono}"/>
             <Setter Property="FontSize" Value="11"/>
-            <Setter Property="Foreground" Value="#AAAAAA"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeBarButtonFg}"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Padding" Value="6,0"/>
             <Setter Property="Template">
@@ -27,7 +27,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="#333333"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ThemeBarButtonHoverFg}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -36,7 +36,8 @@
         </Style>
     </Window.Resources>
 
-    <Border x:Name="MainBorder" CornerRadius="16" Background="White"
+    <Border x:Name="MainBorder" CornerRadius="16"
+            Background="{DynamicResource ThemeBg}"
             Margin="12" MouseLeftButtonDown="MainBorder_MouseLeftButtonDown">
         <Border.Effect>
             <DropShadowEffect BlurRadius="24" ShadowDepth="4" Direction="270" Color="#333333" Opacity="0.18"/>
@@ -47,20 +48,20 @@
                 Background="Transparent" BorderThickness="0"
                 Padding="20,28,20,52"
                 FontFamily="{StaticResource JetBrainsMono}" FontSize="11"
-                Foreground="#333333" WordWrap="True"
+                Foreground="{DynamicResource ThemeFg}" WordWrap="True"
                 ShowLineNumbers="False"
                 VerticalScrollBarVisibility="Auto"
                 HorizontalScrollBarVisibility="Disabled"/>
 
             <TextBlock x:Name="Placeholder" Text="Start writing..."
                        FontFamily="{StaticResource JetBrainsMono}" FontSize="11"
-                       Foreground="#CCCCCC" Margin="24,28,0,0"
+                       Foreground="{DynamicResource ThemePlaceholder}" Margin="24,28,0,0"
                        VerticalAlignment="Top" IsHitTestVisible="False"/>
 
             <!-- Word count — always visible, bottom-left -->
             <TextBlock x:Name="WordCount"
                        FontFamily="{StaticResource JetBrainsMono}" FontSize="9"
-                       Foreground="#DDDDDD"
+                       Foreground="{DynamicResource ThemeSubtle}"
                        HorizontalAlignment="Left" VerticalAlignment="Bottom"
                        Margin="20,0,0,14"
                        IsHitTestVisible="False"/>
@@ -68,7 +69,7 @@
             <!-- Date — always visible, bottom-right -->
             <TextBlock x:Name="DateLabel"
                        FontFamily="{StaticResource JetBrainsMono}" FontSize="9"
-                       Foreground="#DDDDDD"
+                       Foreground="{DynamicResource ThemeSubtle}"
                        HorizontalAlignment="Right" VerticalAlignment="Bottom"
                        Margin="0,0,20,14"
                        IsHitTestVisible="False"/>
@@ -77,7 +78,7 @@
             <TextBlock x:Name="TimerLabel"
                        HorizontalAlignment="Center" VerticalAlignment="Bottom"
                        FontFamily="{StaticResource JetBrainsMono}"
-                       FontSize="9" Foreground="#999999"
+                       FontSize="9" Foreground="{DynamicResource ThemeMuted}"
                        Margin="0,0,0,40"
                        Visibility="Collapsed"
                        IsHitTestVisible="False"/>
@@ -94,13 +95,16 @@
             <Border x:Name="ControlBar"
                     VerticalAlignment="Bottom"
                     Height="34"
-                    Background="White"
+                    Background="{DynamicResource ThemeBg}"
                     CornerRadius="0,0,14,14"
                     Opacity="0"
                     IsHitTestVisible="False"
                     MouseEnter="ControlBar_MouseEnter"
                     MouseLeave="ControlBar_MouseLeave">
-                <Border BorderThickness="0,1,0,0" BorderBrush="#EEEEEE" CornerRadius="0,0,14,14">
+                <Border x:Name="ControlBarInnerBorder"
+                        BorderThickness="0,1,0,0"
+                        BorderBrush="{DynamicResource ThemeControlBorder}"
+                        CornerRadius="0,0,14,14">
                     <Grid Margin="12,0">
                         <!-- Left: prev -->
                         <Button x:Name="PrevNoteBtn" Content="&#x2190;"
@@ -110,7 +114,7 @@
                         <TextBlock x:Name="NoteNameLabel"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                    FontFamily="{StaticResource JetBrainsMono}"
-                                   FontSize="9" Foreground="#999999"/>
+                                   FontSize="9" Foreground="{DynamicResource ThemeMuted}"/>
                         <!-- Right: next, pin, new -->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <Button x:Name="NextNoteBtn" Content="&#x2192;"

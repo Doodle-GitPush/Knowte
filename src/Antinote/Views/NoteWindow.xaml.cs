@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using Knowte.Commands;
 using Knowte.Rendering;
 using Knowte.Storage;
+using Knowte.Theme;
 
 namespace Knowte.Views;
 
@@ -96,6 +97,9 @@ public partial class NoteWindow : Window
 
         Editor.TextChanged += Editor_TextChanged;
         Editor.TextArea.PreviewKeyDown += Editor_PreviewKeyDown;
+
+        ThemeManager.ThemeChanged += ApplyEditorTheme;
+        ApplyEditorTheme();
 
         Deactivated += (_, _) =>
         {
@@ -510,6 +514,14 @@ public partial class NoteWindow : Window
             };
             ModeIndicator.Children.Add(dot);
         }
+    }
+
+    private void ApplyEditorTheme()
+    {
+        var bg = ThemeManager.IsDark
+            ? new SolidColorBrush(Color.FromRgb(0x1E, 0x1E, 0x1E))
+            : new SolidColorBrush(Colors.White);
+        Editor.TextArea.Background = bg;
     }
 
     private void UpdatePlaceholder() =>

@@ -88,19 +88,23 @@
                         Click="SaveBtn_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}"
+                            <Border x:Name="SaveBorder"
+                                    Background="{TemplateBinding Background}"
                                     CornerRadius="6"
-                                    Padding="{TemplateBinding Padding}"
-                                    Opacity="{TemplateBinding IsEnabled, Converter={x:Null}}">
+                                    Padding="{TemplateBinding Padding}">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Background" Value="#CCCCCC"/>
                                 </Trigger>
-                                <Trigger Property="IsMouseOver" Value="True">
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="True"/>
+                                        <Condition Property="IsEnabled" Value="True"/>
+                                    </MultiTrigger.Conditions>
                                     <Setter Property="Background" Value="#EA6C0A"/>
-                                </Trigger>
+                                </MultiTrigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Button.Template>

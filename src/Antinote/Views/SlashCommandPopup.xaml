@@ -6,7 +6,7 @@
        StaysOpen="True">
 
     <Border x:Name="PopupBorder"
-            Background="White"
+            Background="{DynamicResource ThemeBg}"
             CornerRadius="8"
             Padding="3"
             MinWidth="180"
@@ -39,10 +39,10 @@
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Bd" Property="Background" Value="#F0F0F0"/>
+                                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeItemSelected}"/>
                                     </Trigger>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="Bd" Property="Background" Value="#F5F5F5"/>
+                                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeItemHover}"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -54,12 +54,12 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
-                                   FontSize="11" Foreground="#AAAAAA" Text="/"/>
+                                   FontSize="11" Foreground="{DynamicResource ThemeMuted}" Text="/"/>
                         <TextBlock FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
-                                   FontSize="11" Foreground="#1A1A1A"
+                                   FontSize="11" Foreground="{DynamicResource ThemePopupFg}"
                                    Text="{Binding Name}" MinWidth="64"/>
                         <TextBlock FontFamily="pack://application:,,,/Assets/Fonts/#JetBrains Mono"
-                                   FontSize="9" Foreground="#BBBBBB"
+                                   FontSize="9" Foreground="{DynamicResource ThemeMuted}"
                                    Text="{Binding Description}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>

@@ -8,6 +8,7 @@ public class KnowteSettings
 {
     public int HotkeyModifiers { get; set; } = HotkeyManager.MOD_ALT | HotkeyManager.MOD_CONTROL;
     public int HotkeyVk { get; set; } = 0x4E; // N
+    public bool IsDarkMode { get; set; } = false;
 }
 
 public static class SettingsStorage

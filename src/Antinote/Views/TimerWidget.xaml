@@ -17,7 +17,7 @@
 
     <Border x:Name="RootBorder"
             CornerRadius="14"
-            Background="White"
+            Background="{DynamicResource ThemeBg}"
             Margin="6"
             MouseLeftButtonDown="RootBorder_MouseLeftButtonDown">
         <Border.Effect>
@@ -25,14 +25,13 @@
                               Direction="270" Color="#000000" Opacity="0.08"/>
         </Border.Effect>
 
-        <Border CornerRadius="14" BorderBrush="#CCCCCC" BorderThickness="1">
+        <Border CornerRadius="14" BorderBrush="{DynamicResource ThemeBorder}" BorderThickness="1">
             <Grid>
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Margin="17,12">
 
-                    <!-- Alarm clock icon scaled to 17×17 via Viewbox -->
                     <Viewbox Width="17" Height="17" VerticalAlignment="Center">
                         <Canvas Width="24" Height="24">
                             <Line X1="7"  Y1="6.5" X2="4.5" Y2="3.5"
@@ -57,32 +56,24 @@
                         </Canvas>
                     </Viewbox>
 
-                    <!-- Gap: 20px -->
                     <Border Width="20"/>
 
-                    <!-- Time -->
                     <TextBlock x:Name="TimeLabel"
                                FontFamily="{StaticResource ChivoMono}"
-                               FontSize="17"
-                               FontWeight="Medium"
-                               Foreground="#333333"
+                               FontSize="17" FontWeight="Medium"
+                               Foreground="{DynamicResource ThemeFg}"
                                VerticalAlignment="Center"
                                TextOptions.TextRenderingMode="ClearType"
                                TextOptions.TextFormattingMode="Display"/>
                 </StackPanel>
 
-                <!-- Dismiss — fades in on hover -->
                 <Button x:Name="CloseBtn"
                         Content="×"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Margin="0,4,7,0"
-                        FontSize="9"
-                        Foreground="#BBBBBB"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Cursor="Hand"
-                        Opacity="0"
+                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Margin="0,4,7,0" FontSize="9"
+                        Foreground="{DynamicResource ThemeMuted}"
+                        Background="Transparent" BorderThickness="0"
+                        Cursor="Hand" Opacity="0"
                         Click="CloseBtn_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
@@ -91,7 +82,7 @@
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Foreground" Value="#555555"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource ThemeFg}"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

@@ -4,5 +4,20 @@
              xmlns:tb="http://www.hardcodet.net/taskbar">
     <Application.Resources>
         <tb:TaskbarIcon x:Key="TrayIcon"/>
+
+        <!-- Theme palette (light defaults — swapped at runtime for dark mode) -->
+        <SolidColorBrush x:Key="ThemeBg"              Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ThemeFg"              Color="#333333"/>
+        <SolidColorBrush x:Key="ThemePlaceholder"     Color="#CCCCCC"/>
+        <SolidColorBrush x:Key="ThemeSubtle"          Color="#DDDDDD"/>
+        <SolidColorBrush x:Key="ThemeMuted"           Color="#999999"/>
+        <SolidColorBrush x:Key="ThemeBorder"          Color="#CCCCCC"/>
+        <SolidColorBrush x:Key="ThemeControlBorder"   Color="#EEEEEE"/>
+        <SolidColorBrush x:Key="ThemeBarButtonFg"     Color="#AAAAAA"/>
+        <SolidColorBrush x:Key="ThemeBarButtonHoverFg" Color="#333333"/>
+        <SolidColorBrush x:Key="ThemeItemSelected"    Color="#F0F0F0"/>
+        <SolidColorBrush x:Key="ThemeItemHover"       Color="#F5F5F5"/>
+        <SolidColorBrush x:Key="ThemeInputBg"         Color="#F8F8F8"/>
+        <SolidColorBrush x:Key="ThemePopupFg"         Color="#1A1A1A"/>
     </Application.Resources>
 </Application>

@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
 using Knowte.Hotkey;
 using Knowte.Storage;
+using Knowte.Theme;
 using Knowte.Views;
 
 namespace Knowte;
@@ -24,6 +25,7 @@ public partial class App : Application
         Knowte.Startup.StartupManager.Enable();
 
         _settings = SettingsStorage.Load();
+        ThemeManager.Apply(_settings.IsDarkMode);
 
         _noteWindow = new NoteWindow(_storage);
         _noteWindow.Show();
@@ -58,6 +60,18 @@ public partial class App : Application
         var folderItem = new MenuItem { Header = "Open Notes Folder" };
         folderItem.Click += (_, _) => _storage.OpenNotesFolder();
 
+        var darkModeItem = new MenuItem
+        {
+            Header = _settings.IsDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"
+        };
+        darkModeItem.Click += (_, _) =>
+        {
+            _settings.IsDarkMode = !_settings.IsDarkMode;
+            ThemeManager.Apply(_settings.IsDarkMode);
+            SettingsStorage.Save(_settings);
+            darkModeItem.Header = _settings.IsDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode";
+        };
+
         var shortcutItem = new MenuItem
         {
             Header = $"Change Shortcut  ({HotkeyPickerDialog.FormatHotkey(_settings.HotkeyModifiers, _settings.HotkeyVk)})"
@@ -89,6 +103,7 @@ public partial class App : Application
         menu.Items.Add(openItem);
         menu.Items.Add(folderItem);
         menu.Items.Add(new Separator());
+        menu.Items.Add(darkModeItem);
         menu.Items.Add(shortcutItem);
         menu.Items.Add(new Separator());
         menu.Items.Add(exitItem);
